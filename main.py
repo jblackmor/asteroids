@@ -17,10 +17,10 @@ def main():
     
     Player.containers = (updatable, drawable)  # add all Player instances to these groups
     Asteroid.containers = (updatable, drawable, asteroids)  # add all Asteroid instances to these groups
-    AsteroidField.containers = (updatable)
+    AsteroidField.containers = updatable
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    AsteroidField()
+    asteroid_field = AsteroidField()
     
     dt = 0
 
@@ -35,10 +35,16 @@ def main():
                     sys.exit()
 
         updatable.update(dt)
+
+        for a in asteroids:
+            if a.check_for_collisions(player):
+                print('Game over!')
+                sys.exit()
+
         screen.fill(color='black')
         
-        for i in drawable:
-            i.draw(screen)
+        for d in drawable:
+            d.draw(screen)
         
         pygame.display.flip()
 
